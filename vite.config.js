@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ['drawdb.apphia.internal', 'wiki.moodle-apphia.it'],
+    allowedHosts: ['drawdb.moodle-apphia.it', 'wiki.moodle-apphia.it'],
   }
 })
