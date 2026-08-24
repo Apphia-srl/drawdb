@@ -3,9 +3,10 @@ import { SIDESHEET } from "../../../data/constants";
 import { useExtensions } from "../../../context/ExtensionsContext";
 import Timeline from "./Timeline";
 import Versions from "./Versions";
+import DiagramHistory from "./DiagramHistory";
 import { useTranslation } from "react-i18next";
 
-export default function Sidesheet({ type, title, setTitle, onClose }) {
+export default function Sidesheet({ type, title, setTitle, diagramId, onClose }) {
   const { t } = useTranslation();
   const extensions = useExtensions();
 
@@ -15,6 +16,8 @@ export default function Sidesheet({ type, title, setTitle, onClose }) {
         return t("timeline");
       case SIDESHEET.VERSIONS:
         return t("versions");
+      case SIDESHEET.HISTORY:
+        return "History";
       default:
         break;
     }
@@ -33,6 +36,14 @@ export default function Sidesheet({ type, title, setTitle, onClose }) {
               setTitle={setTitle}
             />
           )
+        );
+      case SIDESHEET.HISTORY:
+        return (
+          <DiagramHistory
+            diagramId={diagramId}
+            open={type === SIDESHEET.HISTORY}
+            setTitle={setTitle}
+          />
         );
       default:
         break;

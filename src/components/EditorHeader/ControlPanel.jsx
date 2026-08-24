@@ -107,6 +107,8 @@ export default function ControlPanel({
   lastSaved,
   setLastSaved,
   toolbarContainer,
+  diagramSource,
+  moveToCloud,
 }) {
   const { id: diagramId } = useParams();
 
@@ -935,7 +937,7 @@ export default function ControlPanel({
     setLayout((prev) => ({ ...prev, dbmlEditor: !prev.dbmlEditor }));
   };
   const save = async () => {
-    if (typeof extensions.cloudSave === "function") {
+    if (diagramSource === "cloud" && typeof extensions.cloudSave === "function") {
       // TODO: dont have blank here have null
       const isNew = diagramId === "blank";
       const newId = isNew ? uuidv4() : diagramId;
@@ -1014,7 +1016,7 @@ export default function ControlPanel({
       ...(databases[database].hasTypes && { types }),
     };
 
-    if (typeof extensions.cloudSave === "function") {
+    if (diagramSource === "cloud" && typeof extensions.cloudSave === "function") {
       try {
         await extensions.cloudSave(diagramData, { isNew: true });
       } catch (err) {
@@ -1151,7 +1153,7 @@ export default function ControlPanel({
         },
         function: async () => {
           try {
-            if (typeof extensions.cloudDelete === "function") {
+            if (diagramSource === "cloud" && typeof extensions.cloudDelete === "function") {
               await extensions.cloudDelete(diagramId);
             } else {
               await db.diagrams.where("diagramId").equals(diagramId).delete();
@@ -1890,6 +1892,18 @@ export default function ControlPanel({
             {header()}
             <div className="flex items-center gap-2 me-7">
               <Slot name="header-actions-start" />
+              {!isTemplate &&
+                diagramSource === "local" &&
+                typeof extensions.cloudSave === "function" && (
+                  <Button
+                    type="tertiary"
+                    icon={<i className="bi bi-cloud-arrow-up" />}
+                    loading={saveState === State.SAVING}
+                    onClick={moveToCloud}
+                  >
+                    Move to Cloud
+                  </Button>
+                )}
               {!isTemplate && (
                 <Button
                   type="primary"
@@ -1924,6 +1938,7 @@ export default function ControlPanel({
         type={sidesheet}
         title={title}
         setTitle={setTitle}
+        diagramId={diagramId}
         onClose={() => setSidesheet(SIDESHEET.NONE)}
       />
       <ConfigureCustomTypes
@@ -2113,6 +2128,19 @@ export default function ControlPanel({
               <i className="fa-solid fa-code-branch" />
             </button>
           </Tooltip>
+          {diagramSource === "cloud" && (
+            <>
+              <Divider layout="vertical" margin="8px" />
+              <Tooltip content="History" position="bottom">
+                <button
+                  className="py-1 px-2 hover-2 rounded-sm text-xl -mt-0.5"
+                  onClick={() => setSidesheet(SIDESHEET.HISTORY)}
+                >
+                  <i className="fa-solid fa-clock-rotate-left" />
+                </button>
+              </Tooltip>
+            </>
+          )}
           <Divider layout="vertical" margin="8px" />
           <Tooltip content={t("theme")} position="bottom">
             <button

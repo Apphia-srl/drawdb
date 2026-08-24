@@ -22,6 +22,12 @@ db.version(67)
     });
   });
 
+db.version(68).stores({
+  diagrams: "++id, lastModified, loadedFromGistId, diagramId",
+  templates: "++id, custom, templateId",
+  cloudDiagrams: "diagramId, lastModified",
+});
+
 db.on("populate", (transaction) => {
   transaction.templates.bulkAdd(templateSeeds).catch((e) => console.log(e));
 });

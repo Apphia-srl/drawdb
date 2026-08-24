@@ -102,6 +102,7 @@ export const SIDESHEET = {
   NONE: 0,
   TIMELINE: 1,
   VERSIONS: 2,
+  HISTORY: 3,
 };
 
 export const DB = {

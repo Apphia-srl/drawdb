@@ -319,6 +319,8 @@ const en = {
     default: "Default",
     hide: "Hide",
     force_hide: "Force hide",
+    view_only: "View only",
+    force_view_only: "Force view only",
     primary_key: "Primary key",
     foreign_key: "Foreign key",
     import_with_ai: "Import with AI",

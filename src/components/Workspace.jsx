@@ -142,7 +142,7 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
       setSearchParams(searchParams, { replace: true });
     }
 
-    if (cloudOnly && diagramSource !== "local") {
+    if (diagramSource === "cloud") {
       const isNew =
         !loadedDiagramId || loadedDiagramId === "blank" || isTemplate;
       const targetId = isNew
@@ -217,7 +217,6 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
         });
     }
   }, [
-    cloudOnly,
     diagramSource,
     buildCloudPayload,
     extensions,
@@ -418,11 +417,6 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
     }
 
     if (!loadedDiagramId) {
-      if (cloudOnly) {
-        if (previousLoadedId != null) resetEditorState();
-        if (selectedDb === "") setShowSelectDbModal(true);
-        return;
-      }
       await loadLatestDiagram();
       return;
     }
@@ -456,7 +450,6 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
     isDiagram,
     isTemplate,
     loadedDiagramId,
-    cloudOnly,
   ]);
 
   const returnToCurrentDiagram = async () => {
@@ -515,6 +508,8 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
           lastSaved={lastSaved}
           setLastSaved={setLastSaved}
           toolbarContainer={toolbarContainer}
+          diagramSource={diagramSource}
+          moveToCloud={moveToCloud}
         />
       </IdContext.Provider>
       <div
