@@ -1901,7 +1901,7 @@ export default function ControlPanel({
                     loading={saveState === State.SAVING}
                     onClick={moveToCloud}
                   >
-                    Move to Cloud
+                    Move to Share
                   </Button>
                 )}
               {!isTemplate && (

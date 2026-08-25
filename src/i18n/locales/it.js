@@ -239,7 +239,7 @@ const it = {
     empty_index_name: "Dichiarato un indice senza nome nella tabella '{{tableName}}'",
     didnt_find_diagram: "Ops! Impossibile trovare il diagramma.",
     unsigned: "Senza segno",
-    share: "Condividi",
+    share: "Embed",
     unshare: "Annulla condivisione",
     copy_link: "Copia link",
     readme: "README",
