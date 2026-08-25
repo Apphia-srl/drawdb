@@ -69,6 +69,8 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
     useState(readDismissedBanners);
   const pendingNewIdRef = useRef(null);
   const loadedIdRef = useRef(null);
+  const loadGenerationRef = useRef(0);
+  const lastSeenLoadGenerationRef = useRef(0);
   const { layout, setLayout } = useLayout();
   const { settings } = useSettings();
   const { types, setTypes } = useTypes();
@@ -293,6 +295,7 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
     };
 
     const applyDiagramState = (diagram) => {
+      loadGenerationRef.current += 1;
       setDatabase(diagram.database || DB.GENERIC);
       setGistId(diagram.gistId);
       setLoadedFromGistId(diagram.loadedFromGistId);
@@ -307,6 +310,7 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
     };
 
     const resetEditorState = () => {
+      loadGenerationRef.current += 1;
       setTables([]);
       setRelationships([]);
       setAreas([]);
@@ -365,6 +369,7 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
         if (selectedDb === "") setShowSelectDbModal(true);
         return;
       }
+      loadGenerationRef.current += 1;
       setDiagramSource(null);
       setDatabase(template.database || DB.GENERIC);
       setTitle(template.title);
@@ -383,6 +388,7 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
       try {
         const { data } = await get(shareId);
         const parsed = JSON.parse(data.files[SHARE_FILENAME].content);
+        loadGenerationRef.current += 1;
         setDiagramSource(null);
         setUndoStack([]);
         setRedoStack([]);
@@ -466,6 +472,11 @@ export default function WorkSpace({ forcedDiagramId } = {}) {
       types?.length === 0
     )
       return;
+
+    if (lastSeenLoadGenerationRef.current !== loadGenerationRef.current) {
+      lastSeenLoadGenerationRef.current = loadGenerationRef.current;
+      return;
+    }
 
     if (settings.autosave) {
       setSaveState(State.SAVING);
