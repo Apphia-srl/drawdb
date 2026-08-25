@@ -34,11 +34,11 @@ export default function Share({ title, setModal }) {
   const customContent = extensions?.["share-modal-content"];
 
   const [embedSettings, setEmbedSettings] = useState({
-    theme: null,
-    hideHeader: null,
-    hideSidebar: null,
-    hideToolbar: null,
-    readOnly: null,
+    theme: "light",
+    hideHeader: "force",
+    hideSidebar: "force",
+    hideToolbar: "force",
+    readOnly: "force",
   });
 
   const url = useMemo(() => {
