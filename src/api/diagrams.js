@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl =
   import.meta.env.VITE_DIAGRAM_BACKEND_URL ||
   import.meta.env.VITE_BACKEND_URL ||
-  "http://localhost:5000";
+  "/backend";
 
 export async function get(id) {
   const res = await axios.get(`${baseUrl}/diagrams/${id}`);

@@ -8,7 +8,7 @@ const description = "drawDB diagram";
 const baseUrl =
   import.meta.env.VITE_GIST_BACKEND_URL ||
   import.meta.env.VITE_BACKEND_URL ||
-  "http://localhost:5000";
+  "/backend";
 
 export async function create(filename, content) {
   const res = await axios.post(`${baseUrl}/gists`, {
